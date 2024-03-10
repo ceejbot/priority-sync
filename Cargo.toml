@@ -1,0 +1,17 @@
+[package]
+name = "priority-sync"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { version = "0.4.35", features = ["clock"] }
+chrono-humanize = "0.2.3"
+clap = { version = "4.5.2", features = ["derive", "wrap_help"] }
+log = "0.4.21"
+loggerv = "0.7.2"
+miette = { version = "7.2.0", features = ["fancy"] }
+owo-colors = { version = "4.0.0", features = ["supports-color"] }
+tempfile = "3.10.1"
+thiserror = "1.0.57"
