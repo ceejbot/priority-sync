@@ -161,7 +161,7 @@ impl Profile {
             dry_run_path.set_file_name(DRYRUN_FILE);
             std::fs::copy(tmppath, &dry_run_path).into_diagnostic()?;
             println!(
-                "{} order updated in {}",
+                "{} {} updated",
                 self.name().bold().blue(),
                 DRYRUN_FILE.bold()
             );

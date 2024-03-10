@@ -1,6 +1,6 @@
 `priority-sync` is a command-line tool for synchronizing MO2 mod priority orders across several profiles at once. It can sync mod order from a single hand-chosen profile to any other profile, or sync from the newest to all your other profiles. The enabled/disabled state of mods is preserved if possible. The previous order is preserved in a backup file.
 
-It is stupid, simple, and quite fast because of how stupid it is. I mean, seriously, the sync algorithm is a vector clone. I don't think it can get any stupider.
+It is stupid, simple, and quite fast because of how stupid it is. I mean, seriously, the sync algorithm is a vector clone. I don't think it can get any stupider. The times in the screenshots are over a WIFI network mount, so they're kinda slow compared to normal. On local storage, it's more like tens of milliseconds, depending what's in your disk cache. In other words: it's fast enough.
 
 ## Usage
 
@@ -38,6 +38,10 @@ For any command that touches a `modlist.txt` file, the older file is saved as a 
 **Q:** It messed up and disabled a mod that I had renamed in an explorer window.
 
 **A:** Yeah, this is a weakness of the approach. I know how I would fix it. It requires maintaining a little db to map mod info in the `meta.ini` file with folder names, and back again, so I can detect renames that happen out of band of MO2. If I get energized, I'll do this.
+
+**Q:** Does it work with games other than Skyrim?
+
+**A:** I have not tested it. Maybe another modern-ish Bethesda game would work?
 
 ## Alternatives
 

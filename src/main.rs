@@ -107,7 +107,6 @@ fn sync_newest(args: &Args, profile_dir: &str) -> Result<()> {
         source.modified_human().bold()
     );
     for mut target in profiles {
-        println!("    syncing to {}", target.name().bold().blue());
         target.synchronize(&source);
         target.write(args.dry_run)?;
     }
