@@ -41,7 +41,7 @@ For any command that touches a `modlist.txt` file, the older file is saved as a 
 
 ## Alternatives
 
-[Kezyma's Profile Sync for Mod Organizer](https://www.nexusmods.com/skyrimspecialedition/mods/60690) is a proper MO2 plugin that tries to keep groups of plugins in sync with each other. This is a _lot_ more convenient to use than an MO2 executable, but I found that it stops working periodically. And because it's in Python, it's slower than this tool.
+[Kezyma's Profile Sync for Mod Organizer](https://www.nexusmods.com/skyrimspecialedition/mods/60690) is a proper MO2 plugin that tries to keep groups of plugins in sync with each other. This is a _lot_ more convenient to use than an MO2 executable, but I found that it stops working periodically. And because it's in Python and does something fairly different, it's slower than this tool.
 
 ## Permissions and credits
 
