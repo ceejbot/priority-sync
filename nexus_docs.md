@@ -2,15 +2,19 @@
 
 It is stupid, simple, and quite fast because of how stupid it is. I mean, seriously, the sync algorithm is a vector clone. I don't think it can get any stupider. The times in the screenshots are over a WIFI network mount, so they're kinda slow compared to normal. On local storage, it's more like tens of milliseconds, depending what's in your disk cache. In other words: it's fast enough.
 
+## Installing
+
+Download the Windows archive from here and put the executable somewhere in your path. Alternatively, see the [latest GitHub release](https://github.com/ceejbot/priority-sync/releases/latest) for installation options via Homebrew or Powershell installer for ARM Mac, x64 Unixes, and x64 Windows.
+
 ## Usage
 
 You can run this from the command-line or as an executable in MO2. `priority-sync help` gives full command help.
 
-The `sync` subcommand applies the priority order of NiceUpdatedProfile to OldUnsortedProfile.
+The `sync` subcommand applies the priority order of a source profile to a target profile.
 To sync one profile from the command line, you would run something like:
 
 ```text
-priority-sync sync g:\SkyrimProfiles\NiceUpdatedProfile g:\SkyrimProfiles\OldUnsortedProfile
+priority-sync sync D:\SkyrimProfiles\NiceUpdatedProfile D:\SkyrimProfiles\OldUnsortedProfile
 ```
 
 The command you probably want to use routinely is `sync-newest`, like this:
@@ -19,7 +23,7 @@ The command you probably want to use routinely is `sync-newest`, like this:
 priority-sync sync-newest /path/to/MO2/profiles
 ```
 
-This applies the mod order in the _most recently changed_ profile to all the other profiles found in the given directory. The current profile is extremely likely to be the profile you've edited most recently. This is the profile most likely to have all your current plugins. The full command line for this will look like:
+This applies the mod order in the _most recently changed_ profile to all the other profiles found in the given directory. The current profile is extremely likely to be the profile you've edited in MO2 most recently. This is the profile that will list all your currently-installed mods.
 
 For usage in MO2, you'll want the `sync-newest` subcommand with the `--wait` option to show you what the tool did. The arguments for the executable will look like: `sync-newest /path/to/MO2/profiles --wait`.
 

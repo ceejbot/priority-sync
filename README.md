@@ -4,6 +4,13 @@
 
 It is stupid, simple, and quite fast because of how stupid it is. I mean, seriously, the sync algorithm is a vector clone. I don't think it can get any stupider.
 
+You can install this tool by downloading a prebuilt executable from [the latest release](https://github.com/ceejbot/priority-sync/releases/latest). If you are a homebrew user:
+
+```sh
+brew tap ceejbot/tap
+brew install priority-sync
+```
+
 ## Usage
 
 You can run this from the command-line or as an executable in MO2. `priority-sync help` gives full command help.
