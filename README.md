@@ -14,7 +14,7 @@ To sync one profile from the command line, you would run something like:
 priority-sync sync g:\SkyrimProfiles\NiceUpdatedProfile g:\SkyrimProfiles\OldUnsortedProfile
 ```
 
-The `sync` subcommand applies the priority order of NiceUpdatedProfile to OldUnsortedProfile.
+This `sync` subcommand applies the priority order of NiceUpdatedProfile to OldUnsortedProfile.
 
 For usage in MO2, you'll want the `sync-newest` subcommand. This applies the mod order in the _most recently changed_ profile to all of the profiles found in the given directory. The current profile is extremely likely to be the profile you've edited most recently. This is the profile most likely to have all your current plugins. The full command line for this will look like:
 

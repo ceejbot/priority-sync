@@ -2,16 +2,38 @@
 name = "priority-sync"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["C J Silverio <ceejceej@gmail.com>"]
+license = "Parity-7.0.0"
+readme = "README.md"
+keywords = ["skyrim", "cli", "gaming"]
+repository = "https://github.com/ceejbot/priority-sync"
 
 [dependencies]
 chrono = { version = "0.4.35", features = ["clock"] }
 chrono-humanize = "0.2.3"
 clap = { version = "4.5.2", features = ["derive", "wrap_help"] }
-log = "0.4.21"
-loggerv = "0.7.2"
 miette = { version = "7.2.0", features = ["fancy"] }
 owo-colors = { version = "4.0.0", features = ["supports-color"] }
 tempfile = "3.10.1"
-thiserror = "1.0.57"
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.11.1"
+# The installers to generate for each app
+installers = ["powershell", "homebrew"]
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["aarch64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+# CI backends to support
+ci = ["github"]
+# A GitHub repo to push Homebrew formulas to
+tap = "ceejbot/homebrew-tap"
+# Publish jobs to run in CI
+publish-jobs = ["homebrew"]
+# Publish jobs to run in CI
+pr-run-mode = "plan"

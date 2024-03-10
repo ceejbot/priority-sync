@@ -13,13 +13,10 @@ pub use profile::*;
 #[derive(Parser, Debug)]
 #[clap(name = "mcm-meta-helper", version)]
 pub struct Args {
-    /// Print out more information as the tool runs.
+    /// Force a sync even if the source is older than the target.
     #[clap(long, short, global = true)]
-    verbose: bool,
-    /// Print out only very important information.
-    #[clap(long, short, global = true)]
-    quiet: bool,
-    /// Report what the tool would do, without saving files.
+    force: bool,
+    /// Don't replace the modlist.txt file, but save the new file next to it.
     #[clap(long, short, global = true)]
     dry_run: bool,
     /// Wait until you press enter; for running as MO2 executable.
@@ -51,26 +48,35 @@ pub enum Command {
     },
 }
 
-fn synchronize(args: &Args, source: &String, t: &String) -> Result<()> {
-    let profile = Profile::new(source.as_str())?;
-    profile.report();
-    let mut target = Profile::new(t.as_str())?;
+fn synchronize(args: &Args, s: &str, t: &str) -> Result<()> {
+    let source = Profile::new(s)?;
+    let mut target = Profile::new(t)?;
+    println!("\nsource: {}", source.name().bold().yellow());
+    source.report();
+    println!("\ntarget: {}", target.name().bold().blue());
     target.report();
-    log::info!(
-        "{} ➜ {}",
-        profile.name().bold().yellow(),
-        target.name().bold().blue()
-    );
-    target.synchronize(&profile, false);
+    println!();
 
-    if !args.dry_run {
-        target.write()?;
+    if !args.force && !args.dry_run && target.modified() > source.modified() {
+        // Here we warn the user and halt rather than deleting mods from its list.
+        // Plugins in MO2 avoid this problem because the active profiles always has
+        // the full mod list.
+        // The dry run is always safe, and the force option says do it anyway.
+        println!("⚠️ The target profile is newer than the source. Not syncing!");
+        println!(
+            "Use the {} flag to perform the sync anyway.",
+            "--force".bold().bright_magenta()
+        );
+        return Ok(());
     }
+
+    target.synchronize(&source);
+    target.write(args.dry_run)?;
 
     Ok(())
 }
 
-fn sync_newest(args: &Args, profile_dir: &String) -> Result<()> {
+fn sync_newest(args: &Args, profile_dir: &str) -> Result<()> {
     let mut profiles: Vec<Profile> = std::fs::read_dir(profile_dir)
         .into_diagnostic()?
         .flatten()
@@ -79,7 +85,7 @@ fn sync_newest(args: &Args, profile_dir: &String) -> Result<()> {
                 match Profile::from_path(f.path()) {
                     Ok(p) => Some(p),
                     Err(e) => {
-                        log::warn!("Skipping profile {f:?}; error={e:?}");
+                        println!("Skipping profile {f:?}; error={e:?}");
                         None
                     }
                 }
@@ -91,7 +97,7 @@ fn sync_newest(args: &Args, profile_dir: &String) -> Result<()> {
 
     profiles.sort_by_key(|p| p.modified());
     let Some(source) = profiles.pop() else {
-        log::warn!("No profiles found!");
+        println!("⚠️ No profiles found!");
         return Ok(());
     };
 
@@ -101,18 +107,16 @@ fn sync_newest(args: &Args, profile_dir: &String) -> Result<()> {
         source.modified_human().bold()
     );
     for mut target in profiles {
-        log::info!("    syncing to {}", target.name().bold().blue());
-        target.synchronize(&source, true);
-        if !args.dry_run {
-            target.write()?;
-        }
+        println!("    syncing to {}", target.name().bold().blue());
+        target.synchronize(&source);
+        target.write(args.dry_run)?;
     }
 
     Ok(())
 }
 
-fn report(_args: &Args, source: &String) -> Result<()> {
-    let profile = Profile::new(source.as_str())?;
+fn report(_args: &Args, source: &str) -> Result<()> {
+    let profile = Profile::new(source)?;
     profile.report();
     Ok(())
 }
@@ -120,27 +124,6 @@ fn report(_args: &Args, source: &String) -> Result<()> {
 /// Process command-line options and act on them.
 fn main() -> Result<()> {
     let args = Args::parse();
-    let level = if args.verbose {
-        // Debug-level logging should be designed for modders to read when they
-        // are trying to debug problems.
-        log::Level::Debug
-    } else if args.quiet {
-        // Error- and warn-level logging should be designed to inform modders about truly important
-        // problems or results.
-        log::Level::Warn
-    } else {
-        // Info-level logging should be designed for modders to read normally.
-        log::Level::Info
-    };
-
-    loggerv::Logger::new()
-        .max_level(level)
-        .line_numbers(false)
-        .module_path(false)
-        .colors(true)
-        .init()
-        .unwrap();
-
     match args.cmd {
         Command::Sync {
             ref source,
