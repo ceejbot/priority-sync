@@ -22,6 +22,9 @@ pub struct Args {
     /// Report what the tool would do, without saving files.
     #[clap(long, short, global = true)]
     dry_run: bool,
+    /// Wait until you press enter; for running as MO2 executable.
+    #[clap(long, short, global = true)]
+    wait: bool,
     /// What to do.
     #[clap(subcommand)]
     cmd: Command,
@@ -146,6 +149,12 @@ fn main() -> Result<()> {
         Command::SyncNewest { ref profile_dir } => sync_newest(&args, profile_dir)?,
         Command::Report { ref source } => report(&args, source)?,
     };
+
+    if args.wait {
+        let mut buf = String::new();
+        println!("\nPress enter to quit...");
+        std::io::stdin().read_line(&mut buf).into_diagnostic()?;
+    }
 
     Ok(())
 }

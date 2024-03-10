@@ -19,10 +19,10 @@ The `sync` subcommand applies the priority order of NiceUpdatedProfile to OldUns
 For usage in MO2, you'll want the `sync-newest` subcommand. This applies the mod order in the _most recently changed_ profile to all of the profiles found in the given directory. The current profile is extremely likely to be the profile you've edited most recently. This is the profile most likely to have all your current plugins. The full command line for this will look like:
 
 ```text
-priority-sync sync-newest /path/to/MO2/profiles
+priority-sync --wait sync-newest /path/to/MO2/profiles
 ```
 
-For any command that touches a `modlist.txt` file, the older file is saved as a backup using the MO2 backup file name pattern.
+For any command that changes a `modlist.txt` file, the older file is saved as a backup using the MO2 backup file name pattern.
 
 ## Building
 
