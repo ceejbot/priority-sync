@@ -40,10 +40,11 @@ archive:
     #!/usr/bin/env bash
     set -e
     version=$(tomato get package.version Cargo.toml)
-    release_name={{TOOL_NAME}}_v${version}
+    toolname=$(tomato get package.name Cargo.toml)
+    release_name="${toolname}_v${version}"
     rm -f "$release_name".7z
     cd target/release
-    7z a "$release_name".7z {{TOOL_NAME}}.{exe,pdb}
+    7z a "$release_name".7z "$toolname".{exe,pdb}
     cd ../..
     mv target/release/"$release_name".7z .
     echo "Mod archive for v${version} ready at ${release_name}.7z"
